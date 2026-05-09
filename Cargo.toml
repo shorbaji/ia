@@ -1,0 +1,8 @@
+[package]
+name = "ia"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ia"
+path = "src/main.rs"
