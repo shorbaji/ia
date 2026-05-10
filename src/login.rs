@@ -1,10 +1,8 @@
 use std::error::Error;
-use std::fs;
-use std::io::Write;
-use std::os::unix::fs::OpenOptionsExt;
-use std::path::PathBuf;
 
 use tiny_http::{Header, Response, Server};
+
+use crate::credentials::{credentials_path, save_token};
 
 const BASE_URL_DEFAULT: &str = "https://insaali.com";
 
@@ -74,24 +72,4 @@ fn random_state() -> Result<String, Box<dyn Error>> {
     let mut buf = [0u8; 16];
     getrandom::getrandom(&mut buf).map_err(|e| format!("getrandom: {e}"))?;
     Ok(buf.iter().map(|b| format!("{:02x}", b)).collect())
-}
-
-pub fn credentials_path() -> Result<PathBuf, Box<dyn Error>> {
-    let base = dirs::config_dir().ok_or("no config dir")?;
-    Ok(base.join("insaali").join("credentials"))
-}
-
-fn save_token(token: &str) -> Result<(), Box<dyn Error>> {
-    let path = credentials_path()?;
-    if let Some(parent) = path.parent() {
-        fs::create_dir_all(parent)?;
-    }
-    let mut f = fs::OpenOptions::new()
-        .write(true)
-        .create(true)
-        .truncate(true)
-        .mode(0o600)
-        .open(&path)?;
-    f.write_all(token.as_bytes())?;
-    Ok(())
 }

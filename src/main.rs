@@ -1,4 +1,7 @@
+mod api;
+mod credentials;
 mod login;
+mod runs;
 
 use clap::{Parser, Subcommand};
 
@@ -13,18 +16,48 @@ struct Cli {
 enum Commands {
     /// Sign in via browser and save a token at ~/.config/insaali/credentials.
     Login,
+    /// Start a simulation run.
+    Run {
+        /// Simulator (e.g. mujoco).
+        #[arg(long)]
+        sim: String,
+        /// Policy reference (e.g. hf://owner/model).
+        #[arg(long)]
+        policy: String,
+        /// Compute backend.
+        #[arg(long, default_value = "insaali")]
+        compute_backend: String,
+    },
+    /// Show status of a run.
+    Status {
+        /// Run id.
+        run_id: String,
+    },
+    /// Print accumulated logs for a run.
+    Logs {
+        /// Run id.
+        run_id: String,
+    },
 }
 
 fn main() {
     let cli = Cli::parse();
-    match cli.command {
-        None => println!("hello, world!"),
-        Some(Commands::Login) => match login::run() {
-            Ok(()) => {}
-            Err(e) => {
-                eprintln!("login failed: {e}");
-                std::process::exit(1);
-            }
-        },
+    let result = match cli.command {
+        None => {
+            println!("hello, world!");
+            Ok(())
+        }
+        Some(Commands::Login) => login::run(),
+        Some(Commands::Run {
+            sim,
+            policy,
+            compute_backend,
+        }) => runs::run(&sim, &policy, &compute_backend),
+        Some(Commands::Status { run_id }) => runs::status(&run_id),
+        Some(Commands::Logs { run_id }) => runs::logs(&run_id),
+    };
+    if let Err(e) = result {
+        eprintln!("error: {e}");
+        std::process::exit(1);
     }
 }
