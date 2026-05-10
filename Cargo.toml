@@ -6,3 +6,11 @@ edition = "2021"
 [[bin]]
 name = "ia"
 path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+dirs = "5"
+getrandom = "0.2"
+tiny_http = "0.12"
+url = "2"
+webbrowser = "1"
