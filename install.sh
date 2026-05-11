@@ -1,4 +1,16 @@
 #!/bin/sh
+#
+# insaali CLI installer.
+#
+# Detects platform (Darwin arm64 / Linux x86_64 / Linux aarch64),
+# downloads the matching prebuilt binary from the public GitHub
+# Releases on shorbaji/ia, and installs it at ~/.local/bin/ia.
+#
+# Source-of-truth:    https://github.com/shorbaji/ia/blob/main/install.sh
+# Verify this script: curl -fsSL https://insaali.com/install.sh.sha256 | shasum -a 256 -c -
+#
+# No data is collected. No root required. To uninstall: rm ~/.local/bin/ia.
+
 set -e
 
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
