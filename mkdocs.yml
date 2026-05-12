@@ -1,0 +1,17 @@
+site_name: ia
+site_url: https://docs.insaali.com/ia/
+site_description: Command-line client for insaali — simulation infrastructure for robotics.
+repo_url: https://github.com/shorbaji/insaali
+repo_name: shorbaji/insaali
+edit_uri: edit/main/cli/docs/
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Install: install.md
+  - Reference: reference.md
