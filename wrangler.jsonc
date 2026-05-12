@@ -1,0 +1,19 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "insaali-docs",
+	"compatibility_date": "2025-09-01",
+	"assets": {
+		"directory": "site"
+	},
+	"env": {
+		"dev": {
+			"name": "insaali-docs-dev"
+		},
+		"prod": {
+			"name": "insaali-docs-prod",
+			"routes": [
+				{ "pattern": "docs.insaali.com", "custom_domain": true }
+			]
+		}
+	}
+}
