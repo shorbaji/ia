@@ -1,9 +1,12 @@
 site_name: insaali/ia
 site_url: https://docs.insaali.com/ia/
 site_description: Command-line client for insaali — simulation infrastructure for robotics.
-repo_url: https://github.com/shorbaji/insaali
-repo_name: shorbaji/insaali
-edit_uri: edit/main/cli/docs/
+repo_url: https://github.com/shorbaji/ia
+repo_name: shorbaji/ia
+# Edit links suppressed: docs source lives in shorbaji/insaali (this repo),
+# but the displayed repo points to the public ia mirror, so per-page edit
+# URIs would 404.
+edit_uri: ""
 
 docs_dir: docs
 # Build into site/ia so the Cloudflare Worker (assets dir = cli/site)
