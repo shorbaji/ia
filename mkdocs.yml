@@ -13,6 +13,11 @@ site_dir: site/ia
 theme:
   name: material
   custom_dir: overrides
+  # Match the web app's light look: white header, amber accent links.
+  # The exact accent (#b45309) is enforced by stylesheets/extra.css.
+  palette:
+    primary: white
+    accent: deep orange
 
 extra_css:
   - stylesheets/extra.css

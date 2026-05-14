@@ -1,5 +1,17 @@
+/* Brand accent. Keep in sync with web/app/globals.css --accent. */
+:root {
+  --md-accent-fg-color: #b45309;
+  --md-typeset-a-color: #b45309;
+}
+
+/* Site title in the header reads as a link to the docs root, so style it
+   in the accent color to match the web nav's "insaali" wordmark. */
+.md-header__title {
+  color: var(--md-accent-fg-color);
+}
+
 .md-header__dashboard {
-  color: var(--md-primary-bg-color);
+  color: var(--md-accent-fg-color);
   font-size: 0.7rem;
   font-weight: 500;
   padding: 0 0.8rem;
