@@ -10,7 +10,12 @@ fn auth() -> Result<(Client, String, String), Box<dyn Error>> {
     Ok((Client::new(), token, api_url()))
 }
 
-pub fn run(simulator: &str, policy_ref: &str, compute_backend: &str) -> Result<(), Box<dyn Error>> {
+pub fn simeval(
+    simulator: &str,
+    policy_ref: &str,
+    backend: &str,
+    max_steps: u32,
+) -> Result<(), Box<dyn Error>> {
     let (client, token, base) = auth()?;
     let resp = client
         .post(format!("{base}/runs"))
@@ -18,7 +23,8 @@ pub fn run(simulator: &str, policy_ref: &str, compute_backend: &str) -> Result<(
         .json(&CreateRunRequest {
             simulator,
             policy_ref,
-            compute_backend,
+            compute_backend: backend,
+            max_steps,
         })
         .send()?
         .error_for_status()?;

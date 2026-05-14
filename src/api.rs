@@ -11,6 +11,7 @@ pub struct CreateRunRequest<'a> {
     pub simulator: &'a str,
     pub policy_ref: &'a str,
     pub compute_backend: &'a str,
+    pub max_steps: u32,
 }
 
 #[derive(Deserialize, Debug)]

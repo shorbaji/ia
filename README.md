@@ -25,12 +25,13 @@ ia login    # browser sign-in (GitHub or Google); writes ~/.config/insaali/crede
 ia logout   # remove the saved token
 ```
 
-## Run a simulation
+## Run a simeval
 
 ```sh
-ia run --sim mujoco --policy hf://owner/model
+ia run simeval --backend anyscale --policy hf://owner/model
+ia run simeval --backend k8s      --policy hf://owner/model --sim HalfCheetah-v5 --max-steps 200
 ia status <run-id>
 ia logs <run-id>
 ```
 
-`--compute-backend` defaults to `insaali`. Set `INSAALI_API_URL` to point the CLI at a non-production API.
+`--backend` selects where the run executes: `anyscale` (Anyscale Job) or `k8s` (KubeRay RayJob on the insaali GKE cluster). `--sim` defaults to `HalfCheetah-v5`; `--max-steps` defaults to 100. Set `INSAALI_API_URL` to point the CLI at a non-production API.

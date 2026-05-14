@@ -4,7 +4,7 @@ mod login;
 mod logout;
 mod runs;
 
-use clap::{Parser, Subcommand};
+use clap::{Parser, Subcommand, ValueEnum};
 
 #[derive(Parser)]
 #[command(name = "ia", version, about = "insaali CLI")]
@@ -19,17 +19,10 @@ enum Commands {
     Login,
     /// Sign out by removing the saved token.
     Logout,
-    /// Start a simulation run.
+    /// Start a run.
     Run {
-        /// Simulator (e.g. mujoco).
-        #[arg(long)]
-        sim: String,
-        /// Policy reference (e.g. hf://owner/model).
-        #[arg(long)]
-        policy: String,
-        /// Compute backend.
-        #[arg(long, default_value = "insaali")]
-        compute_backend: String,
+        #[command(subcommand)]
+        target: RunTarget,
     },
     /// Show status of a run.
     Status {
@@ -43,6 +36,42 @@ enum Commands {
     },
 }
 
+#[derive(Subcommand)]
+enum RunTarget {
+    /// Run a simeval episode (one policy in one simulator).
+    Simeval {
+        /// Compute backend to execute the run on.
+        #[arg(long, value_enum)]
+        backend: Backend,
+        /// Simulator (gymnasium env id, e.g. HalfCheetah-v5).
+        #[arg(long, default_value = "HalfCheetah-v5")]
+        sim: String,
+        /// Policy reference (hf://owner/repo).
+        #[arg(long)]
+        policy: String,
+        /// Maximum environment steps per episode.
+        #[arg(long, default_value_t = 100)]
+        max_steps: u32,
+    },
+}
+
+#[derive(Clone, Copy, ValueEnum)]
+enum Backend {
+    /// Submit as an Anyscale Job.
+    Anyscale,
+    /// Submit as a KubeRay RayJob on the insaali GKE cluster.
+    K8s,
+}
+
+impl Backend {
+    fn as_str(self) -> &'static str {
+        match self {
+            Backend::Anyscale => "anyscale",
+            Backend::K8s => "k8s",
+        }
+    }
+}
+
 fn main() {
     let cli = Cli::parse();
     let result = match cli.command {
@@ -53,10 +82,14 @@ fn main() {
         Some(Commands::Login) => login::run(),
         Some(Commands::Logout) => logout::run(),
         Some(Commands::Run {
-            sim,
-            policy,
-            compute_backend,
-        }) => runs::run(&sim, &policy, &compute_backend),
+            target:
+                RunTarget::Simeval {
+                    backend,
+                    sim,
+                    policy,
+                    max_steps,
+                },
+        }) => runs::simeval(&sim, &policy, backend.as_str(), max_steps),
         Some(Commands::Status { run_id }) => runs::status(&run_id),
         Some(Commands::Logs { run_id }) => runs::logs(&run_id),
     };
