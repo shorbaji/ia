@@ -83,10 +83,26 @@
       {% endif %}
     {% endif %}
 
-    <!-- Dashboard link -->
-    <a href="https://insaali.com/dashboard" class="md-header__dashboard">
+    <!-- Dashboard link. Defaults to prod; rewritten to the dev web worker
+         when viewed on the dev docs preview hostname, mirroring the redirect
+         in web/middleware.ts so dev docs link to the dev dashboard. -->
+    <a
+      href="https://insaali.com/dashboard"
+      class="md-header__dashboard"
+      data-md-component="dashboard-link"
+    >
       Dashboard
     </a>
+    <script>
+      (function () {
+        var h = location.hostname;
+        if (h.endsWith(".workers.dev") && h.indexOf("insaali-docs-dev.") === 0) {
+          var dev = h.replace(/^insaali-docs-dev\./, "insaali-dev.");
+          var el = document.querySelector('[data-md-component="dashboard-link"]');
+          if (el) el.href = "https://" + dev + "/dashboard";
+        }
+      })();
+    </script>
 
     <!-- Repository information -->
     {% if config.repo_url %}
