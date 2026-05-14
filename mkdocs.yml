@@ -28,4 +28,5 @@ extra_css:
 nav:
   - Home: index.md
   - Install: install.md
+  - Authentication: authentication.md
   - Reference: reference.md

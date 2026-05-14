@@ -14,10 +14,4 @@ cargo build --release
 
 Requires a recent stable Rust toolchain.
 
-## Sign in
-
-```sh
-ia login
-```
-
-Opens your browser to sign in (GitHub or Google), then stores a token at `~/.config/insaali/credentials` for subsequent commands.
+Next: [Authentication](authentication.md).

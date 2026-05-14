@@ -1,6 +1,7 @@
 mod api;
 mod credentials;
 mod login;
+mod logout;
 mod runs;
 
 use clap::{Parser, Subcommand};
@@ -16,6 +17,8 @@ struct Cli {
 enum Commands {
     /// Sign in via browser and save a token at ~/.config/insaali/credentials.
     Login,
+    /// Sign out by removing the saved token.
+    Logout,
     /// Start a simulation run.
     Run {
         /// Simulator (e.g. mujoco).
@@ -48,6 +51,7 @@ fn main() {
             Ok(())
         }
         Some(Commands::Login) => login::run(),
+        Some(Commands::Logout) => logout::run(),
         Some(Commands::Run {
             sim,
             policy,
