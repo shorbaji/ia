@@ -12,6 +12,10 @@ site_dir: site/ia
 
 theme:
   name: material
+  custom_dir: overrides
+
+extra_css:
+  - stylesheets/extra.css
 
 nav:
   - Home: index.md
