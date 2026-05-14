@@ -29,4 +29,5 @@ nav:
   - home: index.md
   - install: install.md
   - auth: authentication.md
+  - run: run.md
   - reference: reference.md

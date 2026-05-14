@@ -8,4 +8,5 @@ curl -fsSL https://insaali.com/install.sh | sh
 
 - [Install](install.md)
 - [Authentication](authentication.md)
+- [Run](run.md)
 - [Reference](reference.md)
