@@ -7,7 +7,10 @@
 	},
 	"env": {
 		"dev": {
-			"name": "insaali-docs-dev"
+			"name": "insaali-docs-dev",
+			"routes": [
+				{ "pattern": "docs.dev.insaali.com", "custom_domain": true }
+			]
 		},
 		"prod": {
 			"name": "insaali-docs-prod",
