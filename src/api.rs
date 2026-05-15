@@ -10,7 +10,6 @@ pub fn api_url() -> String {
 pub struct CreateRunRequest<'a> {
     pub simulator: &'a str,
     pub policy_ref: &'a str,
-    pub compute_backend: &'a str,
     pub max_steps: u32,
 }
 
@@ -21,7 +20,6 @@ pub struct Run {
     pub user_id: String,
     pub simulator: String,
     pub policy_ref: String,
-    pub compute_backend: String,
     pub status: String,
     pub error_message: Option<String>,
     pub created_at: String,

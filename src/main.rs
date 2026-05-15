@@ -4,7 +4,7 @@ mod login;
 mod logout;
 mod runs;
 
-use clap::{Parser, Subcommand, ValueEnum};
+use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(name = "ia", version, about = "insaali CLI")]
@@ -40,9 +40,6 @@ enum Commands {
 enum RunTarget {
     /// Run a simeval episode (one policy in one simulator).
     Simeval {
-        /// Compute backend to execute the run on.
-        #[arg(long, value_enum)]
-        backend: Backend,
         /// Simulator (gymnasium env id, e.g. HalfCheetah-v5).
         #[arg(long, default_value = "HalfCheetah-v5")]
         sim: String,
@@ -53,23 +50,6 @@ enum RunTarget {
         #[arg(long, default_value_t = 100)]
         max_steps: u32,
     },
-}
-
-#[derive(Clone, Copy, ValueEnum)]
-enum Backend {
-    /// Submit as an Anyscale Job.
-    Anyscale,
-    /// Submit as a KubeRay RayJob on the insaali GKE cluster.
-    K8s,
-}
-
-impl Backend {
-    fn as_str(self) -> &'static str {
-        match self {
-            Backend::Anyscale => "anyscale",
-            Backend::K8s => "k8s",
-        }
-    }
 }
 
 fn main() {
@@ -84,12 +64,11 @@ fn main() {
         Some(Commands::Run {
             target:
                 RunTarget::Simeval {
-                    backend,
                     sim,
                     policy,
                     max_steps,
                 },
-        }) => runs::simeval(&sim, &policy, backend.as_str(), max_steps),
+        }) => runs::simeval(&sim, &policy, max_steps),
         Some(Commands::Status { run_id }) => runs::status(&run_id),
         Some(Commands::Logs { run_id }) => runs::logs(&run_id),
     };
